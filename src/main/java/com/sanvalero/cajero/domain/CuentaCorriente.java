@@ -6,24 +6,39 @@ package com.sanvalero.cajero.domain;
 public class CuentaCorriente {
     
     private int numeroCC;
-    private double saldo;
-    private int limiteRojo;
+    private float saldo;
+    private float limiteRojo;
+    private int id_usuario;
     
 //    private Gestor gestor;
 //    private Usuario usuario;
 
-    public CuentaCorriente(int numeroCC, double saldo, int limiteRojo) {
+
+    public CuentaCorriente(int id_usuario, int numeroCC, float saldo, float limiteRojo) {
+        this.id_usuario =id_usuario;
         this.numeroCC = numeroCC;
         this.saldo = saldo;
         this.limiteRojo = limiteRojo;
     }
 
+    public CuentaCorriente() {
+    }
     
-    public void ingresarDinero(double ingreso) {
+
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
+
+    
+    public void ingresarDinero(float ingreso) {
         saldo = saldo + ingreso;
     }
     
-    public void sacarDinero(double sacarDinero) {
+    public void sacarDinero(float sacarDinero) {
         if(saldo - sacarDinero >= limiteRojo) {
         saldo = saldo - sacarDinero;
             System.out.println("Has sacado el dinero. Te quedan " + saldo + "euros.");    
@@ -40,19 +55,19 @@ public class CuentaCorriente {
         this.numeroCC = numeroCC;
     }
 
-    public double getSaldo() {
+    public float getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(double saldo) {
+    public void setSaldo(float saldo) {
         this.saldo = saldo;
     }
 
-    public int getLimiteRojo() {
+    public float getLimiteRojo() {
         return limiteRojo;
     }
 
-    public void setLimiteRojo(int limiteRojo) {
+    public void setLimiteRojo(float limiteRojo) {
         this.limiteRojo = limiteRojo;
     }
     
