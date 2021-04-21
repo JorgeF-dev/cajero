@@ -18,10 +18,10 @@ import java.util.Scanner;
 public class Cajero {
 
     private boolean salir;
-    private Scanner teclado;
-    private Conexion connection;
-    private UsuarioDAO usuarioDAO;
-    private CuentaCorrienteDAO ccDAO;
+    private final Scanner teclado;
+    private final Conexion connection;
+    private final UsuarioDAO usuarioDAO;
+    private final CuentaCorrienteDAO ccDAO;
 
     public Cajero() {
         salir = false;
@@ -40,9 +40,9 @@ public class Cajero {
             System.out.println("3. Revisar datos de tu cuenta");
             System.out.println("4. Operar");
             System.out.println("x. Salir");
-            System.out.print("Selecciona: ");
+            System.out.println("Selecciona: ");
             String menu = teclado.nextLine();
-
+                //menu.toUpperCase()
             switch (menu.toUpperCase()) {
                 case "1":
                     registroUsuario();
@@ -65,21 +65,21 @@ public class Cajero {
                     System.out.println("Opción incorrecta");
             }
         }while (!salir);
-    
     }
-
+    
     private void registroUsuario() {
-        System.out.print("Introduce tu nombre:");
+        
+        System.out.println("Introduce tu nombre:");
         String nombre = teclado.nextLine();
-        System.out.print("Introduce tus apellidos:");
+        System.out.println("Introduce tus apellidos:");
         String apellidos = teclado.nextLine();
-        System.out.print("Introduce tu dni:");
+        System.out.println("Introduce tu dni:");
         String dni = teclado.nextLine();
-        System.out.print("Introduce tu email:");
+        System.out.println("Introduce tu email:");
         String email = teclado.nextLine();
-        System.out.print("Introduce tu número de teléfono:");
+        System.out.println("Introduce tu número de teléfono:");
         int telefono = teclado.nextInt();
-        System.out.print("Introduce tu Contraseña:");
+        System.out.println("Introduce tu Contraseña:");
         String contrasena = teclado.nextLine();
 
         Usuario usuario = new Usuario(nombre, apellidos, dni, email, telefono, contrasena);
