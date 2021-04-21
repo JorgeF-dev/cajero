@@ -32,6 +32,8 @@ public class Conexion {
 
     /**
      * Connect to the data base.
+     * ClassNotFoundException = cnfe
+     * SQLException = sqle
      */
     public void connect() {
         try {
