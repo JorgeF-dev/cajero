@@ -12,14 +12,16 @@ import java.util.ArrayList;
  */
 public class CuentaCorrienteDAO {
     
-    private Conexion connection;
-    
+    private Conexion connection;    
     public CuentaCorrienteDAO(Conexion connection) {
         this.connection = connection;
     }
+    
+    
+   
 //    TODO
     public void crearCC(CuentaCorriente cc) throws SQLException {
-        String sql = "INSERT INTO CUENTAS_REGISTRADAS (numeroCC, saldo, limiteRojo) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO CUENTACORRIENTE (numeroCC, saldo, limiteRojo) VALUES (?, ?, ?)";
         
         PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
         sentencia.setInt(1, cc.getNumeroCC());
