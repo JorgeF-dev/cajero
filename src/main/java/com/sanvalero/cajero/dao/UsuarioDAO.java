@@ -44,32 +44,38 @@ public class UsuarioDAO {
     /*
      * Determina el id_usuario pidiendo al usuario su nombre y apellidos
      */
-    public void verId(String dni,String contrasena) throws SQLException {
-        String sql = "SELECT id_usuario FROM USUARIO WHERE dni = ? AND  contrasena = ?)";
+    public int verId(String dni,String contrasena) throws SQLException {
+        String sql = "SELECT id_usuario FROM USUARIO WHERE dni = ? AND  contrasena = ?";
+        int id_usuario = 0;
         PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
         sentencia.setString(1, dni);
         sentencia.setString(2, contrasena);
-        ResultSet resultado = sentencia.executeQuery(sql);
-        resultado.getInt("id_usuario");
-    }
+        ResultSet resultado = sentencia.executeQuery();
+        while (resultado.next()){
+        id_usuario = resultado.getInt("id_usuario");
+        }       
+        return id_usuario;
+    } 
         
   
-        //    public Usuario showId(String nombre, String apellidos) throws SQLException {
-        //        String sql = "SELECT id_usuario FROM USUARIO WHERE nombre = ? AND  apellidos = ?)";
-        //        
-        //        PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
-        //        sentencia.setString(1, nombre);
-        //        sentencia.setString(2, apellidos);
-        //        ResultSet resultado = sentencia.executeQuery(sql);  //executeQuery
-        //        resultado.getInt("id_usuario");
-        //        return getString(resultado.parseInt.toInt());
-        ////        while (resultado.next()) {
-        ////        int id_usuario = resultado.getInt("id_usuario");
-        ////        }
-        //        
-        //        //return Usuario.sentencia.getInt("id_usuario");
-        //        //return showId(nombre, apellidos);
-        //    }
+//public ArrayList<Coche> obtenerCoches(String cadenaBusqueda) throws SQLException {
+//        String sql = "SELECT * FROM coches WHERE modelo = ?";
+//        ArrayList<Coche> coches = new ArrayList<>();
+//        
+//        PreparedStatement sentencia = conexion.getConexion().prepareStatement(sql);
+//        sentencia.setString(1, cadenaBusqueda);
+//        ResultSet resultado = sentencia.executeQuery();
+//        while (resultado.next()) {
+//            Coche coche = new Coche();
+//            coche.setId(resultado.getInt(1));
+//            coche.setMatricula(resultado.getString(2));
+//            coche.setModelo(resultado.getString(3));
+//            
+//            coches.add(coche);
+//        }
+//        
+//        return coches;
+//    }
         
         
     public ArrayList<Usuario> obtenerUsuario(String cadenaBusqueda) throws SQLException {

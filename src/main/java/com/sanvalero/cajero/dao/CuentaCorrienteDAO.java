@@ -17,16 +17,16 @@ public class CuentaCorrienteDAO {
         this.connection = connection;
     }
     
-    
-   
-//    TODO
+       
     public void crearCC(CuentaCorriente cc) throws SQLException {
-        String sql = "INSERT INTO CUENTACORRIENTE (numeroCC, saldo, limiteRojo) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO CUENTACORRIENTE (numeroCC, saldo, limiteRojo, id_usuario) VALUES (?, ?, ?, ?)";
         
         PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
         sentencia.setInt(1, cc.getNumeroCC());
-        sentencia.setDouble(2, cc.getSaldo());
-        sentencia.setInt(2, cc.getLimiteRojo());
+        sentencia.setFloat(2, cc.getSaldo());
+        sentencia.setFloat(3, cc.getLimiteRojo());
+        sentencia.setInt(4, cc.getId_usuario());
+        
         sentencia.executeUpdate();
     }
 }

@@ -29,12 +29,14 @@ public class Cajero {
         connection = new Conexion();
         connection.connect();
         ccDAO = new CuentaCorrienteDAO(connection);
-        usuarioDAO = new UsuarioDAO(connection);       
+        usuarioDAO = new UsuarioDAO(connection);
     }
 
     public void ejecutar() {
+
+        System.out.println("¡Hola! Te damos la bienvenida a nuestro sistema de banca privada.");
         do {
-            System.out.println("Hola, ¿qué deseas hacer?");
+            System.out.println("¿qué deseas hacer?");
             System.out.println("1. Darte de alta como usuario");
             System.out.println("2. Crear una cuenta corriente(Solo usuarios)");
             System.out.println("3. Revisar datos de tu cuenta");
@@ -58,39 +60,41 @@ public class Cajero {
                     operar();
                     break;
                  */
-                case "x":
+                case "X":
                     salir();
-                    break;    
+                    break;
                 default:
                     System.out.println("Opción incorrecta");
             }
-        }while(!salir);
-        
+        } while (!salir);
+
     }
 
     private void registroUsuario() {
 
-        System.out.println("Introduce tu nombre:");
-        String nombre = teclado.nextLine();
-        System.out.println("Introduce tus apellidos:");
-        String apellidos = teclado.nextLine();
+        System.out.println("Introduce tu nombre: ");
+        String nombre = teclado.next();
+        System.out.println("Introduce tus apellidos: ");
+        String apellidos = teclado.next();
         System.out.println("Introduce tu contrasena:");
-        String contrasena = teclado.nextLine();
+        String contrasena = teclado.next();
         System.out.println("Introduce tu dni:");
-        String dni = teclado.nextLine();
+        String dni = teclado.next();
         System.out.println("Introduce tu email:");
-        String email = teclado.nextLine();
+        String email = teclado.next();
         System.out.println("Introduce tu número de teléfono:");
         int telefono = teclado.nextInt();
         System.out.println("Creando usuario...");
-        
-        Usuario usuario = new Usuario(nombre,apellidos,dni,email,telefono,contrasena);
-//        usuario.setNombre(nombre);
-//        usuario.setApellidos(apellidos);
-//        usuario.setDni(dni);
-//        usuario.setEmail(email);
-//        usuario.setTelefono(telefono);
-//        usuario.setContrasena(contrasena);
+
+        Usuario usuario = new Usuario(nombre, apellidos, dni, email, telefono, contrasena);
+        /*
+        usuario.setNombre(nombre);
+        usuario.setApellidos(apellidos);
+        usuario.setDni(dni);
+        usuario.setEmail(email);
+        usuario.setTelefono(telefono);
+        usuario.setContrasena(contrasena);
+         */
 
         try {
             usuarioDAO.registroUsuario(usuario);
@@ -102,30 +106,36 @@ public class Cajero {
     }
 
     private void crearCC() {
-        System.out.print("Introduce tu dni:");
-        String dni = teclado.nextLine();
-        System.out.print("Introduce tu contraseña:");
-        String contrasena = teclado.nextLine();
+        int id_usuario = 0;
+        System.out.println("Introduce tu dni:");
+        String dni = teclado.next();
+        System.out.println("Introduce tu contraseña:");
+        String contrasena = teclado.next();
         try {
-            usuarioDAO.verId(dni, contrasena);
+            id_usuario = usuarioDAO.verId(dni, contrasena);
+            //Mostramos ID_USUARIO
+            System.out.println("Tu id de usuario es: " + id_usuario);
             System.out.println("Bienvenido");
-        } catch (SQLException sqle) {
-            System.out.println("Se ha producido un problema. Inténtelo de nuevo");
-            sqle.printStackTrace();
-        }
-        System.out.println("Introduce el saldo inicial: ");
-        double saldo = teclado.nextDouble();
-        System.out.println("Introduce el límite de descubierto que quieres permitirte: ");
-        int limiteRojo = teclado.nextInt();
-        // int limiteRojo = Integer.parseInt(teclado.nextLine());
-        System.out.println("Creando tu cuenta corriente con los datos aportados... ");
-        // Para generar el numero de cuenta con un número aleatorio
-        Random random = new Random();
-        int numeroCC = (random.nextInt(999999999));
-        CuentaCorriente cc = new CuentaCorriente(numeroCC, saldo, limiteRojo);
-        try {
-            ccDAO.crearCC(cc);
-            System.out.println("La cuenta se ha registrado correctamente");
+
+            System.out.println("Introduce el saldo inicial: ");
+            float saldo = teclado.nextFloat();
+            System.out.println("Introduce el límite de descubierto que quieres permitirte: ");
+            float limiteRojo = teclado.nextFloat();
+            // int limiteRojo = Integer.parseInt(teclado.nextLine());
+            System.out.println("Creando tu cuenta corriente con los datos aportados... ");
+            // Para generar el numero de cuenta con un número aleatorio
+            Random random = new Random();
+            int numeroCC = (random.nextInt(999999999));
+
+            CuentaCorriente cc = new CuentaCorriente(id_usuario, numeroCC, saldo, limiteRojo);
+            try {
+                ccDAO.crearCC(cc);
+                System.out.println("La cuenta se ha registrado correctamente");
+                System.out.println("Tu número de cuenta es: " + numeroCC);
+            } catch (SQLException sqle) {
+                System.out.println("Se ha producido un problema. Inténtelo de nuevo");
+                sqle.printStackTrace();
+            }
         } catch (SQLException sqle) {
             System.out.println("Se ha producido un problema. Inténtelo de nuevo");
             sqle.printStackTrace();
