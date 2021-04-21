@@ -44,7 +44,7 @@ public class UsuarioDAO {
     /*
      * Determina el id_usuario pidiendo al usuario su nombre y apellidos
      */
-    public void verId(String dni, String contrasena) throws SQLException {
+    public void verId(String dni,String contrasena) throws SQLException {
         String sql = "SELECT id_usuario FROM USUARIO WHERE dni = ? AND  contrasena = ?)";
         PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
         sentencia.setString(1, dni);
@@ -72,7 +72,6 @@ public class UsuarioDAO {
         //    }
         
         
-        //TODO para juntar usuario con cuenta
     public ArrayList<Usuario> obtenerUsuario(String cadenaBusqueda) throws SQLException {
         String sql = "SELECT * FROM USUARIO WHERE DNI = ?";
         ArrayList<Usuario> usuario1 = new ArrayList<>();
