@@ -14,16 +14,16 @@ public class Usuario {
     private int telefono;
     private String contrasena;
 
-//    public Usuario(int id_usuario, String nombre, String apellidos, String dni, String email, int telefono, String contrasena) {
-//        this.id_usuario = id_usuario;
-//        this.nombre = nombre;
-//        this.apellidos = apellidos;
-//        this.dni = dni;
-//        this.email = email;
-//        this.telefono = telefono;
-//        this.contrasena = contrasena;
-//    }
-//
+    public Usuario(int id_usuario, String nombre, String apellidos, String dni, String email, int telefono, String contrasena) {
+        this.id_usuario = id_usuario;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.dni = dni;
+        this.email = email;
+        this.telefono = telefono;
+        this.contrasena = contrasena;
+    }        
+
     public Usuario(String nombre, String apellidos, String dni, String email, int telefono, String contrasena) {
         this.nombre = nombre;
         this.apellidos = apellidos;
@@ -31,7 +31,8 @@ public class Usuario {
         this.email = email;
         this.telefono = telefono;
         this.contrasena = contrasena;
-    }    
+    }
+    
     public Usuario() {
         
     }
@@ -94,11 +95,7 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuario{" + "id_usuario=" + id_usuario +", nombre=" + nombre + ", apellidos=" + apellidos + ", dni=" + dni + ", email=" + email + ", telefono=" + telefono + ", contrasena=" + contrasena + '}';
+        return "Usuario{" + " nombre=" + nombre + ", apellidos=" + apellidos + ", dni=" + dni + ", email=" + email + ", telefono=" + telefono + ", contrasena=" + contrasena + '}';
     }
-//    @Override
-//    public String toString() {
-//        return "Usuario{" + "nombre=" + nombre + ", apellidos=" + apellidos + ", dni=" + dni + ", email=" + email + ", telefono=" + telefono + ", contraseña=" + contrasena + '}';
-//    }
 
 }

@@ -1,5 +1,6 @@
 package com.sanvalero.cajero.dao;
 
+
 import com.sanvalero.cajero.domain.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,11 +19,8 @@ public class UsuarioDAO {
         this.connection = connection;
     }
 
-    /**
+    /*
      * Registra nuevo usuario y lo añade a la bbdd.
-     *
-     * @param usuario
-     * @throws SQLException
      */
     public void registroUsuario(Usuario usuario) throws SQLException {
         String sql = "INSERT INTO USUARIO (NOMBRE, APELLIDOS, DNI, EMAIL, TELEFONO, CONTRASENA) "
@@ -56,44 +54,26 @@ public class UsuarioDAO {
         }       
         return id_usuario;
     } 
-        
-  
-//public ArrayList<Coche> obtenerCoches(String cadenaBusqueda) throws SQLException {
-//        String sql = "SELECT * FROM coches WHERE modelo = ?";
-//        ArrayList<Coche> coches = new ArrayList<>();
-//        
-//        PreparedStatement sentencia = conexion.getConexion().prepareStatement(sql);
-//        sentencia.setString(1, cadenaBusqueda);
-//        ResultSet resultado = sentencia.executeQuery();
-//        while (resultado.next()) {
-//            Coche coche = new Coche();
-//            coche.setId(resultado.getInt(1));
-//            coche.setMatricula(resultado.getString(2));
-//            coche.setModelo(resultado.getString(3));
-//            
-//            coches.add(coche);
-//        }
-//        
-//        return coches;
-//    }
-        
-        
-    public ArrayList<Usuario> obtenerUsuario(String cadenaBusqueda) throws SQLException {
-        String sql = "SELECT * FROM USUARIO WHERE DNI = ?";
+    
+    public ArrayList<Usuario> obtenerUsuario(int id_usuario) throws SQLException {
+        String sql = "SELECT nombre, apellidos, dni, email, telefono, contrasena FROM usuario WHERE id_usuario = ?";
+//        verId(sql,sql);
+        PreparedStatement sentencia;
+        sentencia = connection.getConexion().prepareStatement(sql);
         ArrayList<Usuario> usuario1 = new ArrayList<>();
-
-        PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
-        sentencia.setString(1, cadenaBusqueda);
+        sentencia.setInt(1, id_usuario);
         ResultSet resultado = sentencia.executeQuery();
         while (resultado.next()) {
             Usuario usuario = new Usuario();
+            usuario.setNombre(resultado.getString(1));
+            usuario.setApellidos(resultado.getString(2));
             usuario.setDni(resultado.getString(3));
-
+            usuario.setEmail(resultado.getString(4));
+            usuario.setTelefono(resultado.getInt(5));
+            usuario.setContrasena(resultado.getString(6));            
             usuario1.add(usuario);
-        }
-        return usuario1;
-    }
-//TODO
+        }return usuario1;
+}            
 
     public void eliminarUsuario(String dni, String contrasena) throws SQLException {
         String sql = "DELETE FROM USUARIO WHERE DNI = ? AND  contrasena = ?)";
