@@ -52,11 +52,10 @@ public class Cajero {
                 case "2":
                     crearCC();
                     break;
-                /*
-                    case "3":
+                case "3":
                     verDatos();
                     break;
-                case "4":
+                /* case "4":
                     operar();
                     break;
                  */
@@ -144,14 +143,31 @@ public class Cajero {
     }
 
     /*
-    private void verDatos() {
-
-    }
-
-    private void operar() {
-
-    }
+    Frog frog1 = new Frog(); => creates object frog1 of type Frog.
+System.out.println(frog1); => outputs the String representation
+of the object frog1.
      */
+    private void verDatos() {
+        System.out.println("Introduce tu dni:");
+        String dni = teclado.next();
+        System.out.println("Introduce tu contraseña:");
+        String contrasena = teclado.next();
+        try {
+            int id_usuario = usuarioDAO.verId(dni, contrasena);
+            ArrayList<Usuario> usuario1;            
+            usuario1 = usuarioDAO.obtenerUsuario(dni, contrasena);
+            for (Usuario usuario : usuario1) {
+                System.out.println(usuario);
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Se ha producido un problema leyendo los datos");
+            sqle.printStackTrace();
+        }
+    }
+//    private void operar() {
+//
+//    }
+
     private void salir() {
         salir = true;
     }
