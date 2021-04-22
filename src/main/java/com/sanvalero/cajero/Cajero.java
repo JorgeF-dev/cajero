@@ -11,6 +11,7 @@ import com.sanvalero.cajero.dao.CuentaCorrienteDAO;
 import com.sanvalero.cajero.dao.Conexion;
 import com.sanvalero.cajero.domain.Usuario;
 import com.sanvalero.cajero.dao.UsuarioDAO;
+import com.sanvalero.cajero.domain.Util;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -40,7 +41,7 @@ public class Cajero {
             System.out.println("1. Darte de alta como usuario");
             System.out.println("2. Crear una cuenta corriente(Solo usuarios)");
             System.out.println("3. Revisar datos de tu cuenta");
-            System.out.println("4. Operar");
+            System.out.println("4. Operar y dar de baja");
             System.out.println("x. Salir");
             System.out.println("Selecciona: ");
             String menu = teclado.next();
@@ -55,10 +56,9 @@ public class Cajero {
                 case "3":
                     verDatos();
                     break;
-                /* case "4":
+                case "4":
                     operar();
                     break;
-                 */
                 case "X":
                     salir();
                     break;
@@ -154,19 +154,66 @@ of the object frog1.
         String contrasena = teclado.next();
         try {
             int id_usuario = usuarioDAO.verId(dni, contrasena);
-            ArrayList<Usuario> usuario1;            
-            usuario1 = usuarioDAO.obtenerUsuario(dni, contrasena);
+            ArrayList<Usuario> usuario1;
+            //Seguro que hay alguna forma más rapida y buena para hacerlo,
+            // POR EJEMPLO ALGO ASI?? usuario1 = usuarioDAO.obtenerUsuario(verId);
+            usuario1 = usuarioDAO.obtenerUsuario(id_usuario);
             for (Usuario usuario : usuario1) {
                 System.out.println(usuario);
+            }           
+            ArrayList<CuentaCorriente> cc1;
+            cc1 = ccDAO.obtenerCC(id_usuario);
+            for (CuentaCorriente cc : cc1) {
+                System.out.println(cc);
             }
         } catch (SQLException sqle) {
             System.out.println("Se ha producido un problema leyendo los datos");
             sqle.printStackTrace();
         }
     }
-//    private void operar() {
-//
-//    }
+
+    private void operar() {
+
+
+        do {
+            System.out.println("OPERACIONES");
+            System.out.println("1. Ingresar dinero en cuenta corriente");
+            System.out.println("2. Sacar dinero de cuenta corriente");
+            System.out.println("3. Borrar cuenta corriente");
+            System.out.println("4. Dar de baja usuario (Se eliminará cuenta corriente)");
+            System.out.println("x. Salir");
+            System.out.println("Selecciona: ");
+            String menu = teclado.next();
+
+            switch (menu.toUpperCase()) {
+                case "1":
+                    ingresarDinero();
+                    break;
+//                case "2":
+//                    sacarDinero();
+//                    break;
+//                case "3":
+//                    borrarCC();
+//                    break;
+//                case "4":
+//                    borrarUsuario();
+//                    break;
+                case "X":
+                    salir();
+                    break;
+                default:
+                    System.out.println("Opción incorrecta");
+            }
+        } while (!salir);
+
+    }
+
+    private void ingresarDinero() {
+        System.out.println("Cuanto vas a ingresar: ");
+        float ingreso = teclado.nextFloat();
+        Util util = new Util(ingreso);
+
+    }
 
     private void salir() {
         salir = true;

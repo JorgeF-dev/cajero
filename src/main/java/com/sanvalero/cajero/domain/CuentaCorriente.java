@@ -70,5 +70,10 @@ public class CuentaCorriente {
     public void setLimiteRojo(float limiteRojo) {
         this.limiteRojo = limiteRojo;
     }
+
+    @Override
+    public String toString() {
+        return "CuentaCorriente{" + " numeroCC=" + numeroCC + ",saldo=" + saldo + ", limiteRojo=" + limiteRojo + '}';
+    }
     
 }

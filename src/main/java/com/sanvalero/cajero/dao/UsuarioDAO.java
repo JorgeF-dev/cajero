@@ -1,5 +1,6 @@
 package com.sanvalero.cajero.dao;
 
+
 import com.sanvalero.cajero.domain.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,15 +55,13 @@ public class UsuarioDAO {
         return id_usuario;
     } 
     
-    public ArrayList<Usuario> obtenerUsuario(String dni, String contrasena) throws SQLException {
+    public ArrayList<Usuario> obtenerUsuario(int id_usuario) throws SQLException {
         String sql = "SELECT nombre, apellidos, dni, email, telefono, contrasena FROM usuario WHERE id_usuario = ?";
-        int id_usuario = 0;
-        int verId; 
-        verId = verId(dni,contrasena);
+//        verId(sql,sql);
         PreparedStatement sentencia;
         sentencia = connection.getConexion().prepareStatement(sql);
         ArrayList<Usuario> usuario1 = new ArrayList<>();
-        sentencia.setInt(1, verId);
+        sentencia.setInt(1, id_usuario);
         ResultSet resultado = sentencia.executeQuery();
         while (resultado.next()) {
             Usuario usuario = new Usuario();
