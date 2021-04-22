@@ -97,9 +97,5 @@ public class Usuario {
     public String toString() {
         return "Usuario{" + " nombre=" + nombre + ", apellidos=" + apellidos + ", dni=" + dni + ", email=" + email + ", telefono=" + telefono + ", contrasena=" + contrasena + '}';
     }
-//    @Override
-//    public String toString() {
-//        return "Usuario{" + "id_usuario=" + id_usuario +", nombre=" + nombre + ", apellidos=" + apellidos + ", dni=" + dni + ", email=" + email + ", telefono=" + telefono + ", contrasena=" + contrasena + '}';
-//    }
 
 }
