@@ -23,6 +23,7 @@ public class Cajero {
     private final Conexion connection;
     private final UsuarioDAO usuarioDAO;
     private final CuentaCorrienteDAO ccDAO;
+    private final CuentaCorriente cc;
 
     public Cajero() {
         salir = false;
@@ -31,6 +32,7 @@ public class Cajero {
         connection.connect();
         ccDAO = new CuentaCorrienteDAO(connection);
         usuarioDAO = new UsuarioDAO(connection);
+        cc = new CuentaCorriente();
     }
 
     public void ejecutar() {
@@ -44,7 +46,7 @@ public class Cajero {
             System.out.println("4. Operar y dar de baja");
             System.out.println("x. Salir");
             System.out.println("Selecciona: ");
-            String menu = teclado.next();
+            String menu = teclado.nextLine();
 
             switch (menu.toUpperCase()) {
                 case "1":
@@ -72,17 +74,17 @@ public class Cajero {
     private void registroUsuario() {
 
         System.out.println("Introduce tu nombre: ");
-        String nombre = teclado.next();
+        String nombre = teclado.nextLine();
         System.out.println("Introduce tus apellidos: ");
-        String apellidos = teclado.next();
+        String apellidos = teclado.nextLine();
         System.out.println("Introduce tu contrasena:");
-        String contrasena = teclado.next();
+        String contrasena = teclado.nextLine();
         System.out.println("Introduce tu dni:");
-        String dni = teclado.next();
+        String dni = teclado.nextLine();
         System.out.println("Introduce tu email:");
-        String email = teclado.next();
+        String email = teclado.nextLine();
         System.out.println("Introduce tu número de teléfono:");
-        int telefono = teclado.nextInt();
+        int telefono = Integer.parseInt(teclado.nextLine());
         System.out.println("Creando usuario...");
 
         Usuario usuario = new Usuario(nombre, apellidos, dni, email, telefono, contrasena);
@@ -107,9 +109,9 @@ public class Cajero {
     private void crearCC() {
         int id_usuario = 0;
         System.out.println("Introduce tu dni:");
-        String dni = teclado.next();
+        String dni = teclado.nextLine();
         System.out.println("Introduce tu contraseña:");
-        String contrasena = teclado.next();
+        String contrasena = teclado.nextLine();
         try {
             id_usuario = usuarioDAO.verId(dni, contrasena);
             //Mostramos ID_USUARIO
@@ -117,9 +119,9 @@ public class Cajero {
             System.out.println("Bienvenido");
 
             System.out.println("Introduce el saldo inicial: ");
-            float saldo = teclado.nextFloat();
+            float saldo = Float.parseFloat(teclado.nextLine());
             System.out.println("Introduce el límite de descubierto que quieres permitirte: ");
-            float limiteRojo = teclado.nextFloat();
+            float limiteRojo = Float.parseFloat(teclado.nextLine());
             // int limiteRojo = Integer.parseInt(teclado.nextLine());
             System.out.println("Creando tu cuenta corriente con los datos aportados... ");
             // Para generar el numero de cuenta con un número aleatorio
@@ -149,18 +151,16 @@ of the object frog1.
      */
     private void verDatos() {
         System.out.println("Introduce tu dni:");
-        String dni = teclado.next();
+        String dni = teclado.nextLine();
         System.out.println("Introduce tu contraseña:");
-        String contrasena = teclado.next();
+        String contrasena = teclado.nextLine();
         try {
             int id_usuario = usuarioDAO.verId(dni, contrasena);
             ArrayList<Usuario> usuario1;
-            //Seguro que hay alguna forma más rapida y buena para hacerlo,
-            // POR EJEMPLO ALGO ASI?? usuario1 = usuarioDAO.obtenerUsuario(verId);
             usuario1 = usuarioDAO.obtenerUsuario(id_usuario);
             for (Usuario usuario : usuario1) {
                 System.out.println(usuario);
-            }           
+            }
             ArrayList<CuentaCorriente> cc1;
             cc1 = ccDAO.obtenerCC(id_usuario);
             for (CuentaCorriente cc : cc1) {
@@ -171,9 +171,22 @@ of the object frog1.
             sqle.printStackTrace();
         }
     }
+//Usaremos el 
+//    sentencia.setInt(2, cc.getId_usuario()); para asignar el id pasado en cada operacion
 
     private void operar() {
-
+        System.out.println("LOG-IN");
+        System.out.println("Introduce tu DNI");
+        String dni = teclado.nextLine();
+        System.out.println("Introduce tu contraseña");
+        String contrasena = teclado.nextLine();
+        try {
+        int id_usuario = usuarioDAO.verId(dni, contrasena);
+            System.out.println("Log-In aceptado");
+        } catch (SQLException sqle) {
+            System.out.println("Se ha producido un problema leyendo los datos");
+            sqle.printStackTrace();
+        }
 
         do {
             System.out.println("OPERACIONES");
@@ -183,12 +196,12 @@ of the object frog1.
             System.out.println("4. Dar de baja usuario (Se eliminará cuenta corriente)");
             System.out.println("x. Salir");
             System.out.println("Selecciona: ");
-            String menu = teclado.next();
+            String menu = teclado.nextLine();
 
             switch (menu.toUpperCase()) {
-                case "1":
-                    ingresarDinero();
-                    break;
+//                case "1":
+//                    ingresarDinero();
+//                    break;
 //                case "2":
 //                    sacarDinero();
 //                    break;
@@ -208,12 +221,24 @@ of the object frog1.
 
     }
 
-    private void ingresarDinero() {
-        System.out.println("Cuanto vas a ingresar: ");
-        float ingreso = teclado.nextFloat();
-        Util util = new Util(ingreso);
-
-    }
+//    private void ingresarDinero() {
+//        float saldo = 0;
+//        System.out.println("Cuanto vas a ingresar: ");
+//            float ingreso = teclado.nextFloat();
+//            Util util = new Util(ingreso);
+//         try {
+//            CuentaCorriente cc = new CuentaCorriente (saldo);
+////            float saldo = cc.getSaldo();
+////saldo id ingreso
+//            saldo = cc.getSaldo();
+//            System.out.println("Ingreso correcto");
+//            System.out.println("Saldo actual: " + saldo);
+//        } catch (SQLException sqle) {
+//            System.out.println("Se ha producido un problema leyendo los datos");
+//            sqle.printStackTrace();
+//        }
+//
+//    }
 
     private void salir() {
         salir = true;

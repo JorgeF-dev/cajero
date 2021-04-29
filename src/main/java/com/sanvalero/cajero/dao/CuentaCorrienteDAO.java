@@ -1,8 +1,6 @@
 package com.sanvalero.cajero.dao;
 
-import com.sanvalero.cajero.Cajero;
 import com.sanvalero.cajero.domain.CuentaCorriente;
-import com.sanvalero.cajero.dao.UsuarioDAO;
 import com.sanvalero.cajero.domain.Util;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,13 +52,26 @@ public class CuentaCorrienteDAO {
     //Para update executeUpdate(); 
     public void ingresarDinero(CuentaCorriente cc, Util util) throws SQLException {
         String sql = "UPDATE cuentacorriente SET saldo = ?  WHERE id_usuario = ?";
-        int id_usuario = usuarioDAO.verId(sql, sql);
+//        float ingreso = 0;
         PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
-        
+        sentencia.setInt(2, cc.getId_usuario());
+//        util.getIngreso();
         float saldo = cc.getSaldo() + util.getIngreso();
-        sentencia.setInt(2, id_usuario);
         sentencia.setFloat(1, saldo);
         sentencia.executeUpdate();
     }
+//    public float ingresarDinero(CuentaCorriente cc, Util util) throws SQLException {
+//        String sql = "UPDATE cuentacorriente SET saldo = ?  WHERE id_usuario = ?";
+//        float ingreso = 0;
+//        PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
+//        sentencia.setInt(2, cc.getId_usuario());
+//        util.setIngreso(ingreso);
+//        float saldo = cc.getSaldo() + util.getIngreso();
+//        sentencia.setFloat(1, saldo);
+//        sentencia.executeUpdate();
+//        ResultSet resultado = sentencia.executeQuery();
+//        resultado.getFloat(saldo);
+//    } return saldo;
+
         
 }
