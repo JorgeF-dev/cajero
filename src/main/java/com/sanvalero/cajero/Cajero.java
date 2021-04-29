@@ -24,6 +24,7 @@ public class Cajero {
     private final UsuarioDAO usuarioDAO;
     private final CuentaCorrienteDAO ccDAO;
     private final CuentaCorriente cc;
+    private final Util util;
 
     public Cajero() {
         salir = false;
@@ -33,10 +34,10 @@ public class Cajero {
         ccDAO = new CuentaCorrienteDAO(connection);
         usuarioDAO = new UsuarioDAO(connection);
         cc = new CuentaCorriente();
+        util = new Util();
     }
 
     public void ejecutar() {
-
         System.out.println("¡Hola! Te damos la bienvenida a nuestro sistema de banca privada.");
         do {
             System.out.println("¿qué deseas hacer?");
@@ -68,11 +69,13 @@ public class Cajero {
                     System.out.println("Opción incorrecta");
             }
         } while (!salir);
+    }
 
+    private void salir() {
+        salir = true;
     }
 
     private void registroUsuario() {
-
         System.out.println("Introduce tu nombre: ");
         String nombre = teclado.nextLine();
         System.out.println("Introduce tus apellidos: ");
@@ -86,7 +89,6 @@ public class Cajero {
         System.out.println("Introduce tu número de teléfono:");
         int telefono = Integer.parseInt(teclado.nextLine());
         System.out.println("Creando usuario...");
-
         Usuario usuario = new Usuario(nombre, apellidos, dni, email, telefono, contrasena);
         /*
         usuario.setNombre(nombre);
@@ -96,7 +98,6 @@ public class Cajero {
         usuario.setTelefono(telefono);
         usuario.setContrasena(contrasena);
          */
-
         try {
             usuarioDAO.registroUsuario(usuario);
             System.out.println("Usuario registrado correctamente");
@@ -122,7 +123,6 @@ public class Cajero {
             float saldo = Float.parseFloat(teclado.nextLine());
             System.out.println("Introduce el límite de descubierto que quieres permitirte: ");
             float limiteRojo = Float.parseFloat(teclado.nextLine());
-            // int limiteRojo = Integer.parseInt(teclado.nextLine());
             System.out.println("Creando tu cuenta corriente con los datos aportados... ");
             // Para generar el numero de cuenta con un número aleatorio
             Random random = new Random();
@@ -141,7 +141,6 @@ public class Cajero {
             System.out.println("Se ha producido un problema. Inténtelo de nuevo");
             sqle.printStackTrace();
         }
-
     }
 
     /*
@@ -171,9 +170,9 @@ of the object frog1.
             sqle.printStackTrace();
         }
     }
-//Usaremos el 
-//    sentencia.setInt(2, cc.getId_usuario()); para asignar el id pasado en cada operacion
 
+// Para usar el mismo id en todas las operaciones.
+// sentencia.setInt(2, cc.getId_usuario());
     private void operar() {
         System.out.println("LOG-IN");
         System.out.println("Introduce tu DNI");
@@ -181,66 +180,94 @@ of the object frog1.
         System.out.println("Introduce tu contraseña");
         String contrasena = teclado.nextLine();
         try {
-        int id_usuario = usuarioDAO.verId(dni, contrasena);
-            System.out.println("Log-In aceptado");
+            int id_usuario = usuarioDAO.verId(dni, contrasena);
+
+            do {
+                System.out.println("Log-In aceptado: ID USUARIO: " + id_usuario);
+                System.out.println("OPERACIONES");
+                System.out.println("1. Ingresar dinero en cuenta corriente");
+                System.out.println("2. Sacar dinero de cuenta corriente");
+                System.out.println("3. Borrar cuenta corriente");
+                System.out.println("4. Dar de baja usuario (Se eliminará cuenta corriente)");
+                System.out.println("x. Salir");
+                System.out.println("Selecciona: ");
+                String menu = teclado.nextLine();
+
+                switch (menu.toUpperCase()) {
+                    case "1":
+                        ingresarDinero:
+                        {
+                            float saldo = ccDAO.verSaldo(id_usuario);
+                            System.out.println("Saldo actual: " + saldo);
+                            System.out.println("Cuanto vas a ingresar: ");
+                            float ingreso = Float.parseFloat(teclado.nextLine());
+                            try {
+                                float nuevosaldo = ingreso + saldo;
+                                CuentaCorriente cc = new CuentaCorriente(nuevosaldo);
+                                ccDAO.meteSaca(cc);
+                                System.out.println("Tu saldo actual es: " + cc.getSaldo());
+                            } catch (SQLException sqle) {
+                                System.out.println("Se ha producido un problema leyendo los datos");
+                                sqle.printStackTrace();
+                            }
+                        }
+                        break;
+                    case "2":
+                        sacarDinero:
+                        {
+                            float saldo = ccDAO.verSaldo(id_usuario);
+                            System.out.println("Saldo actual: " + saldo);
+                            System.out.println("Cuanto vas a sacar: ");
+                            float sacar = Float.parseFloat(teclado.nextLine());
+                            try {
+                                float nuevosaldo = sacar - saldo;
+                                CuentaCorriente cc = new CuentaCorriente(nuevosaldo);
+                                ccDAO.meteSaca(cc);
+                                System.out.println("Tu saldo actual es: " + cc.getSaldo());
+                            } catch (SQLException sqle) {
+                                System.out.println("Se ha producido un problema leyendo los datos");
+                                sqle.printStackTrace();
+                            }
+                        }
+                        break;
+                    case "3":
+                        borrarCC:
+                        {
+                            try {
+                                ccDAO.borrarCC(id_usuario);
+                                System.out.println("Cuenta borrada");
+                            } catch (SQLException sqle) {
+                                System.out.println("Se ha producido un problema leyendo los datos");
+                                sqle.printStackTrace();
+                            }
+                        }
+                        break;
+                case "4":
+                    borrarUsuario:
+                        {
+                            try {
+                                usuarioDAO.eliminarUsuario(id_usuario);
+                                System.out.println("Usuario borrado");
+                            } catch (SQLException sqle) {
+                                System.out.println("Se ha producido un problema leyendo los datos");
+                                sqle.printStackTrace();
+                            }
+                        }
+                    break;
+                    case "X":
+                        salir2();
+                        break;
+                    default:
+                        System.out.println("Opción incorrecta");
+                }
+            } while (!salir);
         } catch (SQLException sqle) {
             System.out.println("Se ha producido un problema leyendo los datos");
             sqle.printStackTrace();
         }
-
-        do {
-            System.out.println("OPERACIONES");
-            System.out.println("1. Ingresar dinero en cuenta corriente");
-            System.out.println("2. Sacar dinero de cuenta corriente");
-            System.out.println("3. Borrar cuenta corriente");
-            System.out.println("4. Dar de baja usuario (Se eliminará cuenta corriente)");
-            System.out.println("x. Salir");
-            System.out.println("Selecciona: ");
-            String menu = teclado.nextLine();
-
-            switch (menu.toUpperCase()) {
-//                case "1":
-//                    ingresarDinero();
-//                    break;
-//                case "2":
-//                    sacarDinero();
-//                    break;
-//                case "3":
-//                    borrarCC();
-//                    break;
-//                case "4":
-//                    borrarUsuario();
-//                    break;
-                case "X":
-                    salir();
-                    break;
-                default:
-                    System.out.println("Opción incorrecta");
-            }
-        } while (!salir);
-
     }
 
-//    private void ingresarDinero() {
-//        float saldo = 0;
-//        System.out.println("Cuanto vas a ingresar: ");
-//            float ingreso = teclado.nextFloat();
-//            Util util = new Util(ingreso);
-//         try {
-//            CuentaCorriente cc = new CuentaCorriente (saldo);
-////            float saldo = cc.getSaldo();
-////saldo id ingreso
-//            saldo = cc.getSaldo();
-//            System.out.println("Ingreso correcto");
-//            System.out.println("Saldo actual: " + saldo);
-//        } catch (SQLException sqle) {
-//            System.out.println("Se ha producido un problema leyendo los datos");
-//            sqle.printStackTrace();
-//        }
-//
-//    }
-
-    private void salir() {
+    private void salir2() {
         salir = true;
     }
 

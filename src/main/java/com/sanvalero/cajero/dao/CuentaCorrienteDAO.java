@@ -49,29 +49,32 @@ public class CuentaCorrienteDAO {
         }
         return cc1;
     }
+
+    public float verSaldo(int id_usuario) throws SQLException {
+        String sql = "SELECT saldo FROM cuentacorriente WHERE id_usuario = ?";
+        PreparedStatement sentencia;
+        sentencia = connection.getConexion().prepareStatement(sql);
+        sentencia.setInt(1, id_usuario);
+        ResultSet resultado = sentencia.executeQuery();
+        resultado.next();
+        float saldo = resultado.getFloat("saldo");
+        return saldo;
+    }
+
     //Para update executeUpdate(); 
-    public void ingresarDinero(CuentaCorriente cc, Util util) throws SQLException {
+    public void meteSaca(CuentaCorriente cc) throws SQLException {
         String sql = "UPDATE cuentacorriente SET saldo = ?  WHERE id_usuario = ?";
-//        float ingreso = 0;
         PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
         sentencia.setInt(2, cc.getId_usuario());
-//        util.getIngreso();
-        float saldo = cc.getSaldo() + util.getIngreso();
-        sentencia.setFloat(1, saldo);
+        sentencia.setFloat(1, cc.getSaldo());
         sentencia.executeUpdate();
     }
-//    public float ingresarDinero(CuentaCorriente cc, Util util) throws SQLException {
-//        String sql = "UPDATE cuentacorriente SET saldo = ?  WHERE id_usuario = ?";
-//        float ingreso = 0;
-//        PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
-//        sentencia.setInt(2, cc.getId_usuario());
-//        util.setIngreso(ingreso);
-//        float saldo = cc.getSaldo() + util.getIngreso();
-//        sentencia.setFloat(1, saldo);
-//        sentencia.executeUpdate();
-//        ResultSet resultado = sentencia.executeQuery();
-//        resultado.getFloat(saldo);
-//    } return saldo;
+    
+    public void borrarCC(int id_usuario) throws SQLException {
+        String sql = "DELETE FROM cuentacorriente WHERE id_usuario = ?";
 
-        
+        PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
+        sentencia.setInt(1, id_usuario);
+        sentencia.executeUpdate();
+    }
 }
