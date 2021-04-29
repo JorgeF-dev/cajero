@@ -10,6 +10,10 @@ public class Util {
         this.ingreso = ingreso;
     }
 
+    public Util() {
+    }
+    
+
     public float getIngreso() {
         return ingreso;
     }

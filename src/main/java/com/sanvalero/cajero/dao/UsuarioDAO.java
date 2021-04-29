@@ -75,12 +75,11 @@ public class UsuarioDAO {
         }return usuario1;
 }            
 
-    public void eliminarUsuario(String dni, String contrasena) throws SQLException {
-        String sql = "DELETE FROM USUARIO WHERE DNI = ? AND  contrasena = ?)";
+    public void eliminarUsuario(int id_usuario) throws SQLException {
+        String sql = "DELETE FROM USUARIO WHERE id_usuario = ?";
 
         PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
-        sentencia.setString(1, dni);
-        sentencia.setString(2, contrasena);
+        sentencia.setInt(1, id_usuario);
         sentencia.executeUpdate();
     }
 }
