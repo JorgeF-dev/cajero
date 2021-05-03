@@ -11,7 +11,6 @@ import com.sanvalero.cajero.dao.CuentaCorrienteDAO;
 import com.sanvalero.cajero.dao.Conexion;
 import com.sanvalero.cajero.domain.Usuario;
 import com.sanvalero.cajero.dao.UsuarioDAO;
-import com.sanvalero.cajero.domain.Util;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -23,8 +22,6 @@ public class Cajero {
     private final Conexion connection;
     private final UsuarioDAO usuarioDAO;
     private final CuentaCorrienteDAO ccDAO;
-    private final CuentaCorriente cc;
-    private final Util util;
 
     public Cajero() {
         salir = false;
@@ -33,8 +30,6 @@ public class Cajero {
         connection.connect();
         ccDAO = new CuentaCorrienteDAO(connection);
         usuarioDAO = new UsuarioDAO(connection);
-        cc = new CuentaCorriente();
-        util = new Util();
     }
 
     public void ejecutar() {
@@ -91,6 +86,7 @@ public class Cajero {
         System.out.println("Creando usuario...");
         Usuario usuario = new Usuario(nombre, apellidos, dni, email, telefono, contrasena);
         /*
+        Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setApellidos(apellidos);
         usuario.setDni(dni);
@@ -108,13 +104,12 @@ public class Cajero {
     }
 
     private void crearCC() {
-        int id_usuario = 0;
         System.out.println("Introduce tu dni:");
         String dni = teclado.nextLine();
         System.out.println("Introduce tu contraseña:");
         String contrasena = teclado.nextLine();
         try {
-            id_usuario = usuarioDAO.verId(dni, contrasena);
+            int id_usuario = usuarioDAO.verId(dni, contrasena);
             //Mostramos ID_USUARIO
             System.out.println("Tu id de usuario es: " + id_usuario);
             System.out.println("Bienvenido");
@@ -203,9 +198,9 @@ of the object frog1.
                             float ingreso = Float.parseFloat(teclado.nextLine());
                             try {
                                 float nuevosaldo = ingreso + saldo;
-                                CuentaCorriente cc = new CuentaCorriente(nuevosaldo);
+                                CuentaCorriente cc = new CuentaCorriente(id_usuario, nuevosaldo);
                                 ccDAO.meteSaca(cc);
-                                System.out.println("Tu saldo actual es: " + cc.getSaldo());
+                                System.out.println("Tu saldo actual es: " + nuevosaldo);
                             } catch (SQLException sqle) {
                                 System.out.println("Se ha producido un problema leyendo los datos");
                                 sqle.printStackTrace();
@@ -220,10 +215,10 @@ of the object frog1.
                             System.out.println("Cuanto vas a sacar: ");
                             float sacar = Float.parseFloat(teclado.nextLine());
                             try {
-                                float nuevosaldo = sacar - saldo;
-                                CuentaCorriente cc = new CuentaCorriente(nuevosaldo);
+                                float nuevosaldo = saldo - sacar;
+                                CuentaCorriente cc = new CuentaCorriente(id_usuario, nuevosaldo);
                                 ccDAO.meteSaca(cc);
-                                System.out.println("Tu saldo actual es: " + cc.getSaldo());
+                                System.out.println("Tu saldo actual es: " + nuevosaldo);
                             } catch (SQLException sqle) {
                                 System.out.println("Se ha producido un problema leyendo los datos");
                                 sqle.printStackTrace();
