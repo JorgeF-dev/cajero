@@ -1,7 +1,6 @@
 package com.sanvalero.cajero.dao;
 
 import com.sanvalero.cajero.domain.CuentaCorriente;
-import com.sanvalero.cajero.domain.Util;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,8 +64,8 @@ public class CuentaCorrienteDAO {
     public void meteSaca(CuentaCorriente cc) throws SQLException {
         String sql = "UPDATE cuentacorriente SET saldo = ?  WHERE id_usuario = ?";
         PreparedStatement sentencia = connection.getConexion().prepareStatement(sql);
-        sentencia.setInt(2, cc.getId_usuario());
         sentencia.setFloat(1, cc.getSaldo());
+        sentencia.setInt(2, cc.getId_usuario());
         sentencia.executeUpdate();
     }
     

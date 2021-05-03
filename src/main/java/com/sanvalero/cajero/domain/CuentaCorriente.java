@@ -21,7 +21,8 @@ public class CuentaCorriente {
         this.limiteRojo = limiteRojo;
     }
 
-    public CuentaCorriente(float saldo) {
+    public CuentaCorriente(int id_usuario, float saldo) {
+        this.id_usuario =id_usuario;
         this.saldo = saldo;
     }
     
